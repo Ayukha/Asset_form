@@ -108,13 +108,21 @@
 </head>
 <body>
   <div class="container-fluid">
-    <h1 class="text-center pt-5">Asset Design</h1>
+    <h1 class="text-center pt-5">Asset Design</h1><br>
     <div class="row">
       <div class="col-md-6">
         <div class="d-flex justify-content-center" style="min-height: 80vh;">
           <div class="card">
             <div class="card-header">
-              <h3 class="text-center">Asset Design Rules</h3>
+              <h3 class="text-center">Asset Design Rules</h3><br>
+              <ul>
+                <li>The participants need to use the assets provided in the drive folder <a href="https://goo.gl/xzTNWw">here</a></li>
+                <li>There is no restriction in using any software. The participant may use any image editing software.</li>
+                <li>There is a maximum of three entries per participant valid so choose your best of work.</li>
+                <li>The JPG or PNG image file must have the file name as the admission number of the participant.</li>
+                <li>The winners will be decided on the basis of creativity so anyone who even makes a creative meme can too win!</li>
+                <li>In case of any query contact us at <a href="www.facebook.com/nibblecomputersociety">our facebook page</a></li>
+              </ul>
             </div>
             <div class="card-body">
            </div>
@@ -128,38 +136,20 @@
             <h3 class="text-center">Submission</h3>
           </div>
           <div class="card-body">
-            <form action="">
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-user"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Name" required> 
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-address-book"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Admission number" required>
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                </div>
-                <input type="email" for="email" class="form-control" placeholder="Email" required>
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Zeal_Id">
-              </div>
-              <div class="input-group form-group">
-                <input type="file" required>
-              </div>
+            <form action="." method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
               <div class="form-group">
                 <input type="submit" value="Submit" class="btn float-right login_btn">
               </div>
             </form>
+            {% if messages %}
+              <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -167,35 +157,5 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  jQuery('#signup-form').on('submit',function(e){
-    e.preventDefault();
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
-        var user=JSON.parse(this.responseText);
-        var x_auth = xhttp.getResponseHeader('x-auth');
-        localStorage.setItem('_id',user._id);
-        localStorage.setItem('name',user.name);
-        localStorage.setItem('phone',user.phone);
-        localStorage.setItem('x-auth',x_auth);
-        localStorage.setItem('profile_photo',user.profilePhoto);
-        localStorage.setItem('images',user.images);
-        console.log(window.location.href);
-        window.location.href='/dashboard.html';
-      }
-    };
-    xhttp.open("POST", window.location.origin+"/api/signup", true);
-  // xhttp.setRequestHeader("Content-type", "multipart/form-data");
-  var formData=new FormData();
-  formData.append('name',jQuery("[name='name']").val());
-  formData.append('phone',jQuery("[name='phone']").val());
-  formData.append('password',jQuery("[name='password']").val());
-  formData.append('gender',$("#gender-type option:selected").text());
-  formData.append('image',document.getElementById('dp').files[0]);
-  xhttp.send(formData);
-});
-</script>
 </body>
 </html>
